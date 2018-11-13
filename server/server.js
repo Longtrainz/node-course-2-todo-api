@@ -7,6 +7,7 @@ let {Todo} = require('./models/todo');
 let {User} = require('./models/user');
 
 let app = express();
+const port = process.env.PORT || 3000;
 
 // that is the middleware that we need to give to express. We now can send JSON to our express app.
 app.use(bodyParser.json());
@@ -56,15 +57,11 @@ app.get('/todos/:id', (req, res) => {
             // 400 - and send empty body back
     }).catch((e) => {
         res.status(400).send();
-    });
-        
-            
-             
-        
+    });      
 })
 
-app.listen(3000, () =>  {
-    console.log('Started on port 3000');
+app.listen(port, () =>  {
+    console.log(`Started on port ${port}`);
 });
 
 
