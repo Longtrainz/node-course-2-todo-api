@@ -64,6 +64,8 @@ app.listen(port, () =>  {
     console.log(`Started on port ${port}`);
 });
 
+console.log(process.env.MONGOURI);
+
 
 
 
