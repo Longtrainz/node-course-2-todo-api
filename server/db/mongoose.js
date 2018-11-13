@@ -1,7 +1,7 @@
 let mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGOURI || 'mongodb://localhost:27017/TodoApp', {useNewUrlParser: true });
+mongoose.connect(' mongodb://heroku_mx61kbt2:p5rspv4uavd23tvfnpfpkdu65f@ds039768.mlab.com:39768/heroku_mx61kbt2', {useNewUrlParser: true });
 
 module.exports = {mongoose};
 
