@@ -20,7 +20,7 @@ app.post('/todos', (req, res) => {
         res.send(doc);
     }).catch((e) => {
         res.status(400).send(e);
-    })
+    });
 });
 
 app.get('/todos', (req, res) => {
@@ -28,7 +28,7 @@ app.get('/todos', (req, res) => {
         res.send({todos});
     }).catch((e) => {
         res.status(400).send(e);
-    })
+    });
 });
 
 
@@ -36,35 +36,49 @@ app.get('/todos', (req, res) => {
 app.get('/todos/:id', (req, res) => {
     let id = req.params.id;
     // res.send(req.params);
-
-    // Validate id using isValid
-    // if not valid - 404 and send empty body
     if (!ObjectID.isValid(id)) {
        return res.status(404).send();
     }
-    // findById
     Todo.findById(id).then((todo) => {
-        // success
-            // if todo - send it back
-            // if no todo - send back 404 with empty body
         if (!todo) {
             return res.status(404).send();
         }
-             // if todo - send it back
          res.send({todo});
-        
-        // error
-            // 400 - and send empty body back
     }).catch((e) => {
         res.status(400).send();
     });      
-})
+});
+
+
+// delete route
+app.delete('/todos/:id', (req, res) => {
+    // get the id
+    let id = req.params.id;
+    // validate the id -> not valid? return 404
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+    // remove todo by id
+    Todo.findByIdAndRemove(id).then((todo) => {
+        //success -> if no doc, send 404;
+        if (!todo) {
+           return res.status(404).send();
+        }
+        // if doc, send doc back with 200
+         res.send(todo);
+    }).catch((e) => {
+         // error -> 400 with empty body
+         res.status(400).send();
+    });   
+});
+
+
+
 
 app.listen(port, () =>  {
     console.log(`Started on port ${port}`);
 });
 
-console.log(process.env.MONGOURI);
 
 
 
