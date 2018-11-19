@@ -81,7 +81,7 @@ app.patch('/todos/:id', (req, res) => {
         return res.status(404).send();
     }
 
-    if (_.isBoolean(body.completed) && body.completed === true) {
+    if (_.isBoolean(body.completed) && body.completed) {
         body.completedAt = new Date().getTime();
     } else {
         body.completed = false;
@@ -99,6 +99,20 @@ app.patch('/todos/:id', (req, res) => {
     })
 });
 
+
+// POST /users
+app.post('/users', (req, res) => {
+    let body = _.pick(req.body, ['email', 'password']);
+    let user = new User(body); // body is an object with email and password properties and values
+
+    user.save().then(() => {
+       return user.generateAuthToken();
+    }).then((token) => {
+        res.header('x-auth', token).send(user);
+    }).catch((e) => {
+        res.status(400).send(e);
+    }); 
+});
 
 app.listen(port, () =>  {
     console.log(`Started on port ${port}`);
