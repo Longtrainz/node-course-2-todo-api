@@ -55,6 +55,25 @@ UserSchema.methods.generateAuthToken = function () {
     });
 };
 
+// model method - oppose to instance method (UserSchema.method)
+UserSchema.statics.findByToken = function (token) {
+    let User = this;
+    let decoded;
+    
+    try {
+      decoded = jwt.verify(token, 'abc123');
+    } catch (e) {
+        return Promise.reject();
+    }
+
+    // adding 'return' to be able to add some chaining, because 'findOne' returns Promise
+    return User.findOne({
+        '_id': decoded._id,
+        'tokens.token': token,
+        'tokens.access': 'auth'
+    })
+};
+
 // Create user model
 let User = mongoose.model('User', UserSchema);
 
